@@ -2,12 +2,17 @@
 _Enabling Payload Recovery at Sub-Nyquist Receiver_
 ---
 Problem: Most IoT devices are designed to be low-power and thus have slow oscillators. With a very slow signal sampling rate, how can these low-power IoT devices receive information from high-frequency WiFi packets?
+
 Goal: To design symbols in the WiFi payload that maintain low cross correlation even with distortion due to low-sampling, CFO, and channel distortion, while remaining within WiFi packet standards. 
+
+This research is a part of the [IoTellegence Lab](https://www.yoonchae.net/about-1) as a continuation of [mmComb: High-speed mmWave Commodity WiFi Backscatter](https://www.usenix.org/system/files/nsdi24spring_prepub_chae.pdf) research, which used ambient WiFi packets for significantly higher speed in wireless IoT device uplink. This continuation will focus on the downlink, allowing low-power IoT devices to communicate in full using WiFi signals for energy efficiency. 
+
 ## My Approach 
-If two frequency patterns 𝑋_𝐴 [𝑘]and 𝑋_𝐵 [𝑘]are orthogonal, the corresponding time-domain waveforms 𝑥_𝐴 [𝑛]and 𝑥_𝐵 [𝑛]will have low cross correlation.
+If two frequency patterns 𝑋_𝐴 [𝑘]and 𝑋_𝐵 [𝑘]are orthogonal, the corresponding time-domain waveforms 𝑥_𝐴 [𝑛]and 𝑥_𝐵 [𝑛]will have low cross-correlation.
 Make A and B use disjoint bins (A uses even data bins, B uses odd data bins), then for every k, at least one of 𝑋_𝐴 [𝑘]or 𝑋_𝐵 [𝑘]is zero.
 The only frequencies in common between symbols A and B are the pilot bins used for channel estimation. 
 ### Code 
+
 The signal was originally made with the wlan MATLAB functions to make sure the STF, LTF, and preamble are set up correctly.
 The payload is filled with 64 random symbols and overwritten with a pattern sequence of 64 As and Bs (avoiding the scrambling and interleaving that the MATLAB function applies).
 Symbols A and B are made with even/odd frequency bins and then turned into time domain signals using ifft(), adding Cyclic Prefix to start to stay in accordance with OFDM requirements.
